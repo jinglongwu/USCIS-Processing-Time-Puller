@@ -5,27 +5,48 @@ Example of `email_config.py`
 ```python
 # Google:
 USER = 'user@gmail.com'
-PASS = 'google_password'
+PASS = 'googlepassword'
 SENDER = 'user@gmail.com'
-RECEIVERS = [
-    "receiver1@gmail.com",
-    "receiver2@gmail.com"
-]
+
+RECEIVERS = {
+    'ESC': [
+        "user1@gmail.com",
+        "user2@gmail.com",
+    ],
+    'CSC': [
+        'user2@gmail.com',
+        'user2@nyu.edu',
+    ],
+    'SSC':[
+        'user1@gmail.com'
+    ]
+}
+
+CENTER_NAME = {
+    'ESE': 'Vermont Service Center',
+    'CSC': 'California Service Center',
+    'SSC': 'Texas Service Center'
+}
 
 SMTP_HOST = 'smtp.gmail.com'
 SMTP_PORT = 587
 
-URI_539 = '/processing-times/api/processingtime/I-539/ESC'
-INDEX_539 = 10
-URI_765 = '/processing-times/api/processingtime/I-765/ESC'
-INDEX_765 = 3
+SUBTYPE_INDEX = {
+    'ESC': (10, 6, 3),
+    'CSC': (1, 6, 2),
+    'SSC': (1, 6, 2)
+}
+
+URI_539 = '/processing-times/api/processingtime/I-539/{0}'
+URI_765 = '/processing-times/api/processingtime/I-765/{0}'
 
 HEADERS = {
-        'Accept': 'application/json',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-type': 'application/json',
         'Referer': 'https://egov.uscis.gov/processing-times/'
 }
+
 ```
 
 Use `create_zip.sh` to generate `aws_lambda.zip` then upload to AWS Lambda.
+
+The event should have `service_center` as input tag with value of ESC/CSC/SSC etc.
